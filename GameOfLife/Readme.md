@@ -1,7 +1,7 @@
 Game of Life
 ============
 
-Game of Life inspired by [thread]:(http://love2d.org/forums/viewtopic.php?f=4&t=2858) "this thread"
+Game of Life inspired by [thread](http://love2d.org/forums/viewtopic.php?f=4&t=2858) "this thread"
 
 Controls:
 
