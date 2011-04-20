@@ -18,4 +18,4 @@ Controls:
     right mouse button - check the status of a cell
 
 
-![Screenshot](../../../raw/master/GameOfLife/life.png) "Sample Screenshot"
+![Screenshot](../../raw/master/GameOfLife/life.png) "Sample Screenshot"
