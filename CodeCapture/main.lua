@@ -1,0 +1,26 @@
+local CodeCapture=require 'CodeCapture'
+
+function love.load()
+  CodeCapture.setCode("qwerty", function() MODE='ONE' end)
+  CodeCapture.setCode('second', function() MODE='TWO' end)
+  CodeCapture.setCode('secundo', function() MODE='DUO' end)
+  CodeCapture.setCode(CodeCapture.KONAMI, function() MODE='KONAMI' end)
+  CodeCapture.setCode({'a','mouse-l','b','mouse-r'}, function() MODE='WITH MOUSE' end)
+  CodeCapture.setCode('quit', function() love.event.push('q') end)
+  CodeCapture.setCode('exit', function() love.event.push('q') end)
+
+  MODE='NONE'
+end
+
+function love.draw()
+  love.graphics.print(MODE, 10, 10)
+end
+
+function love.keypressed(a,b)
+  CodeCapture.keypressed(a)
+end
+
+function love.mousepressed(x,y,b)
+  CodeCapture.keypressed('mouse-'..b)
+end
+
