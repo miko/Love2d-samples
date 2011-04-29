@@ -8,6 +8,7 @@ This is a simple library, which can be used to register a sequence of codes (key
 The code is implemented as a simple finite state machine, so you can register many different codes at the same time, and if they share a common prefix, they also share the state.
 
 This sample has several magic codes:
+
   *  "qwerty"
   *  "second"
   *  "secundo"
