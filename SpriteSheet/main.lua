@@ -14,6 +14,13 @@ function love.load()
     end
     Animations[#Animations+1]=a
   end
+  a=S:createAnimation()
+  for row=1,5 do
+    for col=1,4 do
+      a:addFrame(col, row)
+    end
+  end
+  Animations[#Animations+1]=a
 end
 
 function love.update(dt)
@@ -33,7 +40,7 @@ function love.draw()
   if a then
     love.graphics.print(string.format("Animation: %d Delay: %f", selected, a:getDelay()), 100, 100)
   end
-    love.graphics.printf("Press 1..5 to select an animation. \r\nWhen selected, press SPACE to toggle playing, and RIGHT/LEFT to increase/decrease the delay between frames.", 0, 150, 800)
+    love.graphics.printf("Press 1.."..#Animations.." to select an animation. \r\nWhen selected, press SPACE to toggle playing, and RIGHT/LEFT to increase/decrease the delay between frames.", 0, 150, 800)
     
 end
 
