@@ -47,16 +47,18 @@ function love.keypressed(k)
     selected=n
   else
     a=Animations[selected]
-    if k==" " then
-      if a:isPaused() then
-        a:play()
-      else
-        a:pause()
-      end    
-    elseif k=="right" then
-      a:setDelay(a:getDelay()-0.01)    
-    elseif k=="left" then
-      a:setDelay(a:getDelay()+0.01)
+    if a then
+      if k==" " then
+        if a:isPaused() then
+          a:play()
+        else
+          a:pause()
+        end    
+      elseif k=="right" then
+        a:setDelay(a:getDelay()-0.01)    
+      elseif k=="left" then
+        a:setDelay(a:getDelay()+0.01)
+      end
     else
       selected=0
     end    
