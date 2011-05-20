@@ -65,8 +65,11 @@ function love.keypressed(k)
         a:setDelay(a:getDelay()-0.01)    
       elseif k=="left" then
         a:setDelay(a:getDelay()+0.01)
+      else
+        selected=0
       end
+    else
+      selected=0
     end    
-    selected=0
   end
 end
