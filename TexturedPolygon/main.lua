@@ -33,7 +33,12 @@ function makePolygon(V, texture)
     if not maxY or maxY<V[n+1] then maxY=V[n+1] end
   end
   local w,h=maxX-minX+1, maxY-minY+1
-  local fb=love.graphics.newFramebuffer(w, h)
+  local fb
+  if love.graphics.newCanvas then -- 0.8+
+    fb=love.graphics.newCanvas(w, h)
+  else --0.7
+    fb=love.graphics.newFramebuffer(w, h)
+  end
   love.graphics.setRenderTarget(fb)
   love.graphics.setColor(255,255,255)
   love.graphics.translate(-minX, -minY)
