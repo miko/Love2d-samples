@@ -15,6 +15,6 @@ function love.conf(t)
 	t.screen.fullscreen = false
 	t.screen.vsync = true
 	t.screen.fsaa = 0
-	t.screen.height = 800
-	t.screen.width = 1024
+	--t.screen.height = 800
+	--t.screen.width = 1024
 end

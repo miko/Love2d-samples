@@ -1,17 +1,27 @@
 local lg=love.graphics
+ORGWIDTH, ORGHEIGHT=lg.getWidth(), lg.getHeight()
+local Menu=require 'menu'
+
 function love.load()
-  CellSize=30
   ReplayDelay=0.2
+  lg.setBackgroundColor(255,255,255)
+  mode='menu'
+  fullscreen=false
+  diagonal=true
+  initScreen()
+  initGame()
+end
+
+function initScreen()
   W, H=lg.getWidth(), lg.getHeight()
+  --CellSize=30
+  CellSize=math.floor(math.min(W/25, H/25))
+
   CX,CY=math.floor(W/CellSize), math.floor(H/CellSize)
   BorderWidthX=(W-(CX-2)*CellSize)/2
   BorderWidthY=(H-(CY-2)*CellSize)/2
   CX,CY=CX-2,CY-2
-  lg.setBackgroundColor(255,255,255)
-
   lg.setFont(CellSize)
-  firstRun=true
-  initGame()
 end
 
 function initGame()
@@ -34,6 +44,7 @@ function initGame()
   won=nil
   showingBombs=nil
   History={}
+  elapsed=0
 end
 
 function drawCell(X, Y, Color)
@@ -76,10 +87,17 @@ end
 
 function countBombs()
   local n=0
-  for x=PX-1,PX+1 do
-    for y=PY-1,PY+1 do
-      if Bombs[x] and Bombs[x][y] then n=n+1 end
+  if diagonal then
+    for x=PX-1,PX+1 do
+      for y=PY-1,PY+1 do
+        if Bombs[x] and Bombs[x][y] then n=n+1 end
+      end
     end
+  else
+    if Bombs[PX-1] and Bombs[PX-1][PY] then n=n+1 end
+    if Bombs[PX+1] and Bombs[PX+1][PY] then n=n+1 end
+    if Bombs[PX] and Bombs[PX][PY-1] then n=n+1 end
+    if Bombs[PX] and Bombs[PX][PY+1] then n=n+1 end
   end
   return n
 end
@@ -87,15 +105,16 @@ end
 function drawMsgs()
   local n=countBombs()
   lg.setColor(255, 0, 0)
-  lg.printf('Bombs '..n, W-200,0, 200, 'right')
+  lg.printf('Bombs: '..n, 0,0, W, 'right')
+  lg.printf(string.format('Time: %d s', elapsed), 0,0, W, 'left')
   if replaying then
     lg.printf('Replaying...', 0, H/2, W, 'center')
   else
     if crashed then
-      lg.printf('Bum!\n\nPress SPACE to play again, R for replay', 0, H/2, W, 'center')
+      lg.printf('Bum!\n\nPress SPACE to play again, R for replay, M for menu', 0, H/2, W, 'center')
     end
     if won then
-      lg.printf('Congratulations! You win!\n\nPress SPACE to play again, R for replay', 0, H/2, W, 'center')
+      lg.printf('Congratulations! You win in '..math.floor(elapsed)..' seconds!\n\nPress SPACE to play again, R for replay, M for menu', 0, H/2, W, 'center')
     end
   end
 end
@@ -117,15 +136,21 @@ function drawHelp()
   lg.printf([[Your goal is to go from the bottom gate to the top gate of the minefield, without stepping on a mine. The counter at the top right corner shows the number of mines in all 8 neighbouring cells.
 
   Use cursor keys/ WASD for movement, q/ESCAPE for quit.
+
+  In the menu you can change some options (screen resolution, etc).
   
-  Press any key to start.]], W*0.2, H/3, W*0.6, 'center')
+  Press any key to return to menu, then select Play.]], W*0.2, H/5, W*0.6, 'center')
 end
 
 function love.draw()
-  if firstRun then
+  if mode=='help' then
     drawHelp()
     return
+  elseif mode=='menu' then
+    Menu:draw()
+    return
   end
+
   drawBorders()
   drawVisited()
   drawPlayer(PX, PY)
@@ -148,8 +173,11 @@ function love.keypressed(a, b)
   if a=='q' or a=='escape' then
     love.event.push('q')
   end
-  if firstRun then 
-    firstRun=nil 
+  if mode=='menu' then
+    Menu:keypressed(a, b)
+    return
+  elseif mode=='help' then
+    mode='menu'
     return
   end
   if a=='b' then
@@ -162,6 +190,9 @@ function love.keypressed(a, b)
     end
     if a=='r' then
       replayGame()
+    end
+    if a=='m' then
+      mode='menu'
     end
   else
     local moved
@@ -187,6 +218,9 @@ function love.keypressed(a, b)
 end
 
 function love.update(dt)
+  if mode=='play' and not crashed and not won then
+    elapsed=elapsed+dt
+  end
   if not replaying then return end
   timer=(timer or 0)+dt
   if timer>ReplayDelay then
@@ -203,3 +237,14 @@ function love.update(dt)
     end
   end
 end
+
+function resize(W, H)
+  lg.setMode(W, H, fullscreen , true)
+  initScreen()
+end
+
+function love.quit()
+  fullscreen=false
+  resize(ORGWIDTH, ORGHEIGHT)
+end
+
