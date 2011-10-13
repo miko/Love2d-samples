@@ -8,6 +8,8 @@ end
 
 local WIDTH, HEIGHT=lg.getWidth(), lg.getHeight()
 local _SAVED={}
+local iterator
+
 local empty=function() end
 local function save()
   for k,v in pairs({'draw', 'update', 'keypressed', 'keyreleased'}) do
@@ -33,12 +35,20 @@ local function srand(x, y)
   return math.floor(math.random(x, y))
 end
 
---IMGS[#IMGS+1]={fb=fb, dx=fr(300), dy=fr(300), dr=fr(660), R=fr(255), G=fr(255), B=fr(255)}
--- Object: x,y,r, SX, SY - destination
---  sx, sy, sr, sSX, sSY - start
---  R,G,B,A - final
---  sR,sG,aB,sA - start
---  drawable - fb or image
+local function makeSample(len, pitch)
+  len=len or 0.1
+  pitch=pitch or 440
+  local overtime=1.5
+  local tick = love.sound.newSoundData(overtime*len * 44100, 44100, 16, 1)
+  for i = 0,len*44100*overtime do
+    local t = i / 44100
+    local sample = math.sin(t * pitch * math.pi * 2) * len
+    tick:setSample(i, sample)
+  end
+  return tick
+end
+
+                                                        
 local O=class(function(self, data, ctype)
   OBJNAME=(OBJNAME or 0)+1
   self.name=OBJNAME
@@ -109,7 +119,7 @@ function O:start()
     local dw=0
     for c in self.text:gmatch('.') do
       local W=font:getWidth(c)
-      local o={x=self.x+dw, y=self.y, sx=srand(0, WIDTH), sy=srand(0, HEIGHT)}
+      local o={x=self.x+dw, y=self.y, sx=srand(0, WIDTH), sy=srand(0, HEIGHT), char=c}
       o.scolor={srand(0, 255), srand(0, 255),srand(0, 255)}
       o.r=rot
       o.sr=srand(0, math.rad(360)*4)
@@ -153,6 +163,7 @@ end
 function O:draw(pct)
   lg.setColor(255, 255, 255, 255)
   local color=self.color
+  local A=tween(pct, 0, 255)
   if self.ctype=='text' then
     for k,v in ipairs(self._DATA) do
       local x=tween(pct, v.sx, v.x)
@@ -165,7 +176,11 @@ function O:draw(pct)
       local rot=tween(pct, v.sr or 0, self.r or 0)
       local sx=tween(pct, v.sSX, 1)
       --local sy=tween(pct, v.sSY, 1)
-      lg.setColor(R, G, B)
+      if self.hilited==k then
+        lg.setColor(255, 255, 255, 255)
+      else
+        lg.setColor(R, G, B, A)
+      end
       lg.push()
       lg.translate(x+v.cx, y+v.cy)
       lg.rotate(rot)
@@ -187,6 +202,7 @@ function O:draw(pct)
     --]]
     local rot=tween(pct, v.sr or 0, self.r or 0)
     local sx=tween(pct, v.sSX, 1)
+    lg.setColor(255, 255, 255, A)
     --local sy=tween(pct, v.sSY, 1)
     --lg.setColor(R, G, B)
     lg.push()
@@ -197,6 +213,10 @@ function O:draw(pct)
     lg.draw(v.fb, 0, 0)
     lg.pop()
   end
+end
+
+function O:setHilited(id)
+  self.hilited=id
 end
 
 function O:__tostring()
@@ -251,6 +271,54 @@ end
 function M:makeChaos()
   return self
 end
+
+-- len - in seconds, just before duration
+function M:setBlinks(len, obj, ...)
+  if not obj then return self end
+  self.blink=len
+  self.blinkObjects=self.blinkObjects or {}
+  table.insert(self.blinkObjects, obj)
+  return self:setBlinks(len, ...)
+end
+
+function M:_setupBlinks()
+  local count=0
+  for k,v in pairs(self.blinkObjects) do
+    count=count+#v._DATA
+  end
+  self.blinkChars=count
+  self.blinkdt=self.blink/count
+  function self.nextCharIterator()
+    local T=self.blinkObjects
+    local objKey,obj=next(T)
+    local idxKey, idx
+    return function()
+      idxKey, idx=next(obj._DATA, idxKey)
+      if not idx then
+        objKey,obj=next(T, objKey)
+        if not obj then return end
+        idxKey, idx=next(obj._DATA, idxKey)
+      end
+      return obj, idxKey, idx
+    end
+  end
+  SAMPLES={}
+  for obj, idxk, idxo in self:nextCharIterator() do
+    local c=idxo.char:upper()
+    if not SAMPLES[c] then
+      local x=0
+      if c==' ' then
+        x=1
+      elseif c=='!' then
+        x=2
+      else
+        x=c:byte()-62
+      end
+      SAMPLES[c]=makeSample(self.blinkdt, 2^((x-2)/12)*400)
+    end
+  end
+end
+
 function M:start()
   local s=self
   save()
@@ -264,6 +332,9 @@ function M:start()
     v:start()
   end
   lg.setRenderTarget()
+  if self.blink then
+    self:_setupBlinks()
+  end
   return self
 end
 
@@ -292,6 +363,33 @@ function M:update(dt)
     if self.pct~=100 then
       self.pct=100
     end
+
+    if self.blink and self.elapsed-self.duration<=self.blink then
+      BLINKDT=(BLINKDT or 0)+dt
+      if BLINKDT>self.blinkdt then
+        BLINKDT=BLINKDT-self.blinkdt
+        if self.objHilited then
+          self.objHilited:setHilited()
+        end
+
+        --local obj=self.blinkObjects[math.random(1, #self.blinkObjects)]
+        iterator=iterator or self:nextCharIterator()
+        local obj, idxk, idxo=iterator()
+        SRC=SRC or {}
+        local src=love.audio.newSource(SAMPLES[idxo.char:upper()])
+        src:setVolume(2)
+        src:play()
+        SRC[#SRC+1]=src
+        --obj:setHilited(math.random(#obj._DATA))
+        obj:setHilited(idxk)
+        self.objHilited=obj
+      end
+    else
+      if self.objHilited then
+        self.objHilited:setHilited()
+      end
+    end
+
     return
   end
   self.pct=self.elapsed/self.duration*100
