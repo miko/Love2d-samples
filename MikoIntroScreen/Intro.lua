@@ -122,7 +122,7 @@ function O:start()
       local o={x=self.x+dw, y=self.y, sx=srand(0, WIDTH), sy=srand(0, HEIGHT), char=c}
       o.scolor={srand(0, 255), srand(0, 255),srand(0, 255)}
       o.r=rot
-      o.sr=srand(0, math.rad(360)*4)
+      o.sr=srand(0, 360*4)
       dw=dw+W
       o.fb=lg.newFramebuffer(W, H)
 
@@ -135,7 +135,7 @@ function O:start()
   elseif self.ctype=='image' then
     local o={x=self.x, y=self.y, sx=srand(0, WIDTH), sy=srand(0, HEIGHT)}
     o.r=self.r
-    o.sr=srand(0, math.rad(360)*4)
+    o.sr=srand(0, 360*4)
     local W, H=self.data:getWidth(), self.data:getHeight()
     o.cx, o.cy=W/2, H/2
     o.sSX=math.random(100)/10
@@ -183,7 +183,7 @@ function O:draw(pct)
       end
       lg.push()
       lg.translate(x+v.cx, y+v.cy)
-      lg.rotate(rot)
+      lg.rotate(math.rad(rot))
       lg.translate(-v.cx, -v.cy)
       --lg.scale(sx, sx)
       lg.draw(v.fb, 0, 0)
@@ -208,7 +208,7 @@ function O:draw(pct)
     lg.push()
     --lg.scale(sx, sx)
     lg.translate(x+v.cx, y+v.cy)
-    lg.rotate(rot)
+    lg.rotate(math.rad(rot))
     lg.translate(-v.cx, -v.cy)
     lg.draw(v.fb, 0, 0)
     lg.pop()
@@ -312,7 +312,7 @@ function M:_setupBlinks()
       elseif c=='!' then
         x=2
       else
-        x=c:byte()-62
+        x=c:byte()-45 -- 49 for "0", 65 for "A"
       end
       SAMPLES[c]=makeSample(self.blinkdt, 2^((x-2)/12)*400)
     end
