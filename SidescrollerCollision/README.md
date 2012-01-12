@@ -6,6 +6,8 @@ This sample is a follow-up to my earlier [CollisionExample]. This time this is a
 The sample illustrates (in just one of many ways) how you can restrict movement
 of your cursor (character) to stay on screen and not go thru other obstacles.
 
+So: move with LEFT/RIGHT, jump with SPACE. Toggle debug with d.
+
 How the collision works.
 ========================
 
