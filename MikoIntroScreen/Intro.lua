@@ -128,7 +128,7 @@ function O:start()
 
       o.cx, o.cy=W/2, H/2
       o.sSX=math.random(100)/10
-      lg.setRenderTarget(o.fb)
+      lg.setCanvas(o.fb)
       lg.print(c, 0, 0)
       table.insert(self._DATA, o)
     end
@@ -154,7 +154,7 @@ end
 
 function O:getFont(size)
   if not self.font then 
-    lg.setFont(size) 
+    lg.setNewFont(size) 
     self.font=lg.getFont() 
   end
   return self.font
@@ -331,7 +331,7 @@ function M:start()
   for k,v in ipairs(self.Objects) do
     v:start()
   end
-  lg.setRenderTarget()
+  lg.setCanvas()
   if self.blink then
     self:_setupBlinks()
   end

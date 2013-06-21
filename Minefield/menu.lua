@@ -103,7 +103,7 @@ function Menu:onChange(k, v)
 end
 function Menu:onSelect(k)
   if k=='quit' then
-    love.event.push('q')
+    love.event.quit()
   elseif k=='play' then
     mode='play'
     initGame()
