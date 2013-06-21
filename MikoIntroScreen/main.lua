@@ -15,10 +15,10 @@ function love.load()
 end
 
 function love.update(dt)
-  love.event.push('q')
+  love.event.quit()
 end
 --[[
 function love.keypressed(a, b)
-  love.event.push('q')
+  love.event.quit()
 end
 --]]

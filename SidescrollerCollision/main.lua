@@ -158,7 +158,7 @@ end
 
 function love.keypressed(k)
   if k=='escape' then
-    love.event.push('q')
+    love.event.quit()
   end
   if k=='d' then DEBUG=not DEBUG end
 end

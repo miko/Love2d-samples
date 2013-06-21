@@ -39,12 +39,12 @@ function makePolygon(V, texture)
   else --0.7
     fb=love.graphics.newFramebuffer(w, h)
   end
-  love.graphics.setRenderTarget(fb)
+  love.graphics.setCanvas(fb)
   love.graphics.setColor(255,255,255)
   love.graphics.translate(-minX, -minY)
   love.graphics.polygon('fill', V)
   love.graphics.translate(minX, minY)
-  love.graphics.setRenderTarget()
+  love.graphics.setCanvas()
   return texturize(fb, texture)
 end
 

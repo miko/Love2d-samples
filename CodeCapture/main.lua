@@ -6,8 +6,8 @@ function love.load()
   CodeCapture.setCode('secundo', function() MODE='DUO' end)
   CodeCapture.setCode(CodeCapture.KONAMI, function() MODE='KONAMI' end)
   CodeCapture.setCode({'a','mouse-l','b','mouse-r'}, function() MODE='WITH MOUSE' end)
-  CodeCapture.setCode('quit', function() love.event.push('q') end)
-  CodeCapture.setCode('exit', function() love.event.push('q') end)
+  CodeCapture.setCode('quit', function() love.event.quit() end)
+  CodeCapture.setCode('exit', function() love.event.quit() end)
 
   MODE='NONE'
 end

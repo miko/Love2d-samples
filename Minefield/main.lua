@@ -21,7 +21,7 @@ function initScreen()
   BorderWidthX=(W-(CX-2)*CellSize)/2
   BorderWidthY=(H-(CY-2)*CellSize)/2
   CX,CY=CX-2,CY-2
-  lg.setFont(CellSize)
+  lg.setNewFont(CellSize)
 end
 
 function initGame()
@@ -171,7 +171,7 @@ end
 
 function love.keypressed(a, b)
   if a=='q' or a=='escape' then
-    love.event.push('q')
+    love.event.quit()
   end
   if mode=='menu' then
     Menu:keypressed(a, b)
