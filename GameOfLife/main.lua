@@ -20,8 +20,8 @@ function love.load()
   lineWidth=1+1
   elapsed=0
   tick=0.1
-  fb=lg.newFramebuffer()
-  lg.setFont(20)
+  canvas=lg.newCanvas()
+  lg.setNewFont(20)
   status=nil
   init()
 end
@@ -40,7 +40,7 @@ end
 function love.draw()
   if not cached then
     cached=true
-    lg.setRenderTarget(fb)
+    lg.setCanvas(canvas)
     if lineWidth>0 then
       lg.setLineWidth(lineWidth)
     end
@@ -59,10 +59,10 @@ function love.draw()
         end
       end
     end
-    lg.setRenderTarget()
+    lg.setCanvas()
   end
   lg.setColor(255,255,255,255)
-  lg.draw(fb, 0, 0, 0)
+  lg.draw(canvas, 0, 0, 0)
   local msg=string.format("Cols=%d Rows=%d CellSize=%d Gen=%d %s RUNNING FPS=%d ", cols, rows, cellsize, generation, running and '' or 'NOT', love.timer.getFPS())
   if status then msg=msg.."\n"..status end
 
