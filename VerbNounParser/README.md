@@ -8,6 +8,7 @@ The idea is to register a sef of objects (instances of classes with given name a
 Note that the Door class implements "color discriminator" - if you pass a color name, only door object with this color will respond.
 
 So try following commands:
+```
 open window
 open door
 close red door
@@ -17,6 +18,7 @@ Close door red ad green please!
 Please, take the key.
 Drop my key now.
 exit
+```
 
 [verb-noun parser]: http://love2d.org/forums/viewtopic.php?f=4&t=10291
 
