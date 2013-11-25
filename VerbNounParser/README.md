@@ -1,4 +1,4 @@
-SpriteSheet
+VerbNounParser
 ===========
 
 This sample is inspired by the [verb-noun parser] thread.
