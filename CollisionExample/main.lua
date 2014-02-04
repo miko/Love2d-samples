@@ -50,22 +50,14 @@ function love.update(dt)
 end
 
 function isOnScreen()
-  if Cursor.x>0 and Cursor.x+Cursor.w<W and
-     Cursor.y>0 and Cursor.y+Cursor.h<H then
-    return true
-  else
-    return false
-  end
+  return Cursor.x>0 and Cursor.x+Cursor.w<W and
+     Cursor.y>0 and Cursor.y+Cursor.h<H
 end
 
 function isCollidingWith(obj)
   local ox, oy=obj.x-Cursor.x, obj.y-Cursor.y -- let's pretent Cursor is at (0,0)
-  if ox+obj.w<0 or oy+obj.h<0 or
-    ox>Cursor.w or oy>Cursor.h then
-    return false
-  else
-    return true
-  end
+  return ox+obj.w<0 or oy+obj.h<0 or
+    ox>Cursor.w or oy>Cursor.h 
 end
 
 function isColliding()
