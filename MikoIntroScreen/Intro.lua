@@ -40,7 +40,7 @@ local function makeSample(len, pitch)
   pitch=pitch or 440
   local overtime=1.5
   local tick = love.sound.newSoundData(overtime*len * 44100, 44100, 16, 1)
-  for i = 0,len*44100*overtime do
+  for i = 0,tick:getSampleCount()-1 do
     local t = i / 44100
     local sample = math.sin(t * pitch * math.pi * 2) * len
     tick:setSample(i, sample)
@@ -120,7 +120,7 @@ function O:start()
     for c in self.text:gmatch('.') do
       local W=font:getWidth(c)
       local o={x=self.x+dw, y=self.y, sx=srand(0, WIDTH), sy=srand(0, HEIGHT), char=c}
-      o.scolor={srand(0, 255), srand(0, 255),srand(0, 255)}
+      o.scolor={srand(0, 255)/255, srand(0, 255)/255,srand(0, 255)/255}
       o.r=rot
       o.sr=srand(0, 360*4)
       dw=dw+W
@@ -161,9 +161,9 @@ function O:getFont(size)
 end
 
 function O:draw(pct)
-  lg.setColor(255, 255, 255, 255)
+  lg.setColor(1, 1, 1, 1)
   local color=self.color
-  local A=tween(pct, 0, 255)
+  local A=tween(pct, 0, 1)
   if self.ctype=='text' then
     for k,v in ipairs(self._DATA) do
       local x=tween(pct, v.sx, v.x)
@@ -177,7 +177,7 @@ function O:draw(pct)
       local sx=tween(pct, v.sSX, 1)
       --local sy=tween(pct, v.sSY, 1)
       if self.hilited==k then
-        lg.setColor(255, 255, 255, 255)
+        lg.setColor(1, 1, 1, 1)
       else
         lg.setColor(R, G, B, A)
       end
@@ -202,7 +202,7 @@ function O:draw(pct)
     --]]
     local rot=tween(pct, v.sr or 0, self.r or 0)
     local sx=tween(pct, v.sSX, 1)
-    lg.setColor(255, 255, 255, A)
+    lg.setColor(1, 1, 1, A)
     --local sy=tween(pct, v.sSY, 1)
     --lg.setColor(R, G, B)
     lg.push()
@@ -327,7 +327,7 @@ function M:start()
   love.draw=function() s:draw() end
   love.keypressed=function(a, b) s:keypressed(a, b) end
   self.elapsed=0
-  lg.setColor(255, 255, 255, 255)
+  lg.setColor(1, 1, 1, 1)
   for k,v in ipairs(self.Objects) do
     v:start()
   end

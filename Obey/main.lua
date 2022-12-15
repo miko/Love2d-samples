@@ -27,11 +27,11 @@ else --CIRCLE
 end
 
 function Y:onAnimationFinished()
-  local scr=lg.newScreenshot():encode('miko.png')
+  local scr=lg.captureScreenshot('miko.png')
 end
 
 function love.load()
-  lg.setMode(W, H)
+  love.window.setMode(W, H, {resizable =true})
   Chars={O, B, E, Y}
 end
 

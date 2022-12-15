@@ -20,7 +20,7 @@ function M:draw()
   for k,v in ipairs(self.Fireworks) do
     v:draw()
   end
-  love.graphics.setColor(255,255,255,255)
+  love.graphics.setColor(1,1,1,1)
   love.graphics.print('Fireworks: '..#self.Fireworks, 10, 10)
 end
 

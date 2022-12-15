@@ -8,11 +8,11 @@ local M=class(function(self, x, y, R, G, B, v)
   self.Velocity=Vector(math.random(10,50),0):rotate(math.random(0, 360))
   self.elapsed=0
   self.livetime=math.random(20,50)/10
-  self.R=R or math.random(50, 255)
-  self.G=G or math.random(50, 255)
-  self.B=B or math.random(50, 255)
+  self.R=R or math.random(50, 255)/255
+  self.G=G or math.random(50, 255)/255
+  self.B=B or math.random(50, 255)/255
   self.variable=v or 'R'
-  self[self.variable]=math.random(50, 255)
+  self[self.variable]=math.random(50, 255)/255
 end)
 
 function M:update(dt)
@@ -29,7 +29,7 @@ function M:isDead()
 end
 
 function M:draw()
-  local alpha=math.ceil(255-255*(self.elapsed/self.livetime))
+  local alpha=math.ceil(255-255*(self.elapsed/self.livetime))/255
   if alpha<0 then alpha=0 end
   lg.setColor(self.R, self.G, self.B, alpha)
   lg.circle('fill', self.Position.x, self.Position.y, 2, 7)

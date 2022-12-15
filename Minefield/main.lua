@@ -4,7 +4,7 @@ local Menu=require 'menu'
 
 function love.load()
   ReplayDelay=0.2
-  lg.setBackgroundColor(255,255,255)
+  lg.setBackgroundColor(1,1,1)
   mode='menu'
   fullscreen=false
   diagonal=true
@@ -55,7 +55,7 @@ function drawCell(X, Y, Color)
 end
 
 function drawPlayer(X, Y)
-  lg.setColor(255, 255, 0)
+  lg.setColor(1, 1, 0)
   lg.circle('fill', BorderWidthX+CellSize*(X-0.5), BorderWidthY+CellSize*(Y-0.5), CellSize/2, CellSize)
 end
 
@@ -64,18 +64,18 @@ function drawBomb(X, Y)
 end
 
 function drawBorders()
-  lg.setColor(0, 0, 255)
+  lg.setColor(0, 0, 1)
   lg.rectangle('fill', 0, 0, W, BorderWidthY)
   lg.rectangle('fill', 0, H-BorderWidthY, W, BorderWidthY)
   lg.rectangle('fill', 0, 0, BorderWidthX, H)
   lg.rectangle('fill', W-BorderWidthX, 0, BorderWidthX, H)
-  lg.setColor(0, 255, 0)
+  lg.setColor(0, 1, 0)
   drawCell(math.floor(CX/2), CY+1)
   drawCell(math.floor(CX/2), 0)
 end
 
 function drawVisited()
-  lg.setColor(200, 100, 100)
+  lg.setColor(love.math.colorFromBytes(200, 100, 100))
   for x=1,CX do
     for y=1,CY do
       if Visited[x][y] then
@@ -104,7 +104,7 @@ end
 
 function drawMsgs()
   local n=countBombs()
-  lg.setColor(255, 0, 0)
+  lg.setColor(1, 0, 0)
   lg.printf('Bombs: '..n, 0,0, W, 'right')
   lg.printf(string.format('Time: %d s', elapsed), 0,0, W, 'left')
   if replaying then
@@ -185,7 +185,7 @@ function love.keypressed(a, b)
   end
   if replaying then return end
   if crashed or won then
-    if a==' ' then
+    if a=='space' then
       initGame()
     end
     if a=='r' then
@@ -239,7 +239,7 @@ function love.update(dt)
 end
 
 function resize(W, H)
-  lg.setMode(W, H, fullscreen , true)
+  love.window.setMode(W, H, {fullscreen=fullscreen, vsync=1})
   initScreen()
 end
 

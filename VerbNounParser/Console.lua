@@ -39,9 +39,9 @@ end
 
 function M:draw()
   love.graphics.setScissor(self.x, self.y, self.w, self.h)
-  love.graphics.setColor(255,255,255,128)
+  love.graphics.setColor(1, 1,1, 0.5)
   love.graphics.rectangle('fill', self.x, self.y, self.w, self.h)
-  love.graphics.setColor(55,55,55,228)
+  love.graphics.setColor(0.2, 0.2, 0.2, 0.9)
   --love.graphics.setLineWidth(3)
   love.graphics.rectangle('line', self.x, self.y, self.w, self.h)
 
@@ -55,7 +55,7 @@ function M:draw()
   love.graphics.setScissor()
 end
 
-function M:keyPressed(k, u)
+function M:keyPressed(k)
   if k=='delete' or k=='backspace' then
     if #self.line>0 then
       self.line=self.line:sub(1, -2)
@@ -65,15 +65,11 @@ function M:keyPressed(k, u)
       self.callback(self.line, self)
     end
     self.line=''
-  else
-    if u>31 then
-      if u<127 then
-        self.line=self.line..string.char(u)
-      else
-        self.line=self.line..k
-      end
-    end
   end
+end
+
+function M:textInput(t)
+  self.line=self.line..t
 end
 
 function M:addLine(l)

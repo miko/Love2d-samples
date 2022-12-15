@@ -9,9 +9,9 @@ local M=class(function(self, x, y)
   self.Particles={}
   self.numParticles=math.random(150, 450)
   self.elapsed=0
-  self.R=math.random(50, 255)
-  self.G=math.random(50, 255)
-  self.B=math.random(50, 255)
+  self.R=math.random(50, 255)/255
+  self.G=math.random(50, 255)/255
+  self.B=math.random(50, 255)/255
   self.StartPosition=Vector(math.random(0, love.graphics.getWidth()), love.graphics.getHeight())
   self.elapsed=0
   self.livetime=math.random(3,20)/10
@@ -62,7 +62,7 @@ function M:draw()
     local pos1=self.StartPosition-d
     local pos2=self.StartPosition-d2
     
-    love.graphics.setColor(self.R, self.G, self.B, 255)
+    love.graphics.setColor(self.R, self.G, self.B, 1)
     love.graphics.setLineWidth(3)
     love.graphics.line(pos1.x, pos1.y, pos2.x, pos2.y)
     love.graphics.circle('fill', self.StartPosition.x, self.StartPosition.y, 10, 10)

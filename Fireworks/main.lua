@@ -1,7 +1,7 @@
 FireworkEngine=require 'FireworkEngine'
 function love.load()
   FE=FireworkEngine()
-  love.graphics.setBlendMode('additive')
+  love.graphics.setBlendMode('add')
 end
 
 function  love.update(dt)
@@ -13,7 +13,7 @@ function love.draw()
 end
 
 function love.mousepressed(x, y, b)
-  if b=='l' then
+  if b==1 then
     FE:addFirework(x, y)
   end
 end

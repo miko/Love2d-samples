@@ -6,7 +6,7 @@ local Console=require 'Console'
 
 local Objects
 function love.load()
-  love.graphics.setBackgroundColor(255, 255, 255)
+  love.graphics.setBackgroundColor(1, 1, 1)
   P=Parser.new()
 
   local blackdoor=Door.new({color='black'})
@@ -46,7 +46,11 @@ function love.update(dt)
   console:update(dt)
 end
 
-function love.keypressed(k, u)
-  console:keyPressed(k, u)
+function love.keypressed(k)
+  console:keyPressed(k)
+end
+
+function love.textinput(t)
+  console:textInput(t)
 end
 

@@ -9,7 +9,7 @@ local Options={
   {name='quit', title='Quit'}
 }
  
-local modes=lg.getModes()
+local modes=love.window.getFullscreenModes()
 for k,v in ipairs(modes) do
   Options[4].options[k]=v.width..'x'..v.height
   if v.width==ORGWIDTH and v.height==ORGHEIGHT then
@@ -28,9 +28,9 @@ local Menu={
 function Menu:draw()
   for k,v in ipairs(Options) do
     if k==self.currentOption then
-      lg.setColor(50,50,255)
+      lg.setColor(love.math.colorFromBytes(50,50,255))
     else
-      lg.setColor(50,50,50)
+      lg.setColor(love.math.colorFromBytes(50,50,50))
     end
     if v.value then
       lg.printf(string.format('%s [%s]', v.title, v.value), 0, (2+k)*CellSize*2, W, 'center')

@@ -3,7 +3,7 @@ local lg=love.graphics
 
 local M=class(Char, function(self, W, H)
   Char.init(self, 'B', W, H)
-  self.color={0, 255,0,255}
+  self.color={0, 1,0,1}
   local P={}
   local p=5
   for i=-90, 90, p do
@@ -20,7 +20,7 @@ function M:_draw()
   lg.translate(0, 2*self.H/5)
   lg.polygon('fill', self.POINTS)
   lg.translate(self.W/2, -self.H/5)
-  lg.setColor(0, 0, 0, 255)
+  lg.setColor(0, 0, 0, 1)
   lg.circle('fill', 0.6*self.W/2, -0.6*self.H/3, self.H/15)
   lg.circle('fill', 0.6*self.W/2, 0.6*self.H/3, self.H/15)
 end
