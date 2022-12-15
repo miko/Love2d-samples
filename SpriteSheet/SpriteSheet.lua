@@ -11,7 +11,7 @@ end
 function Animation:draw(x, y)
   local quad=self.frames[self.currentFrame]
   if quad then
-    lg.drawq(self.parent.img, quad, x, y)
+    lg.draw(self.parent.img, quad, x, y)
   end
 end
 

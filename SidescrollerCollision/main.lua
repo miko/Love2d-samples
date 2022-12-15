@@ -11,7 +11,7 @@ function love.update(dt)
 end
 
 function love.draw()
-  love.graphics.setColor(255,255,255)
+  love.graphics.setColor(1,1,1)
   for y=1,#map do
     for x=1,#map[y] do
       if map[y][x] == 1 then
@@ -23,10 +23,10 @@ function love.draw()
       end
     end
   end
-  love.graphics.setColor(255,0,0,128)
+  love.graphics.setColor(1,0,0,0.5)
   love.graphics.rectangle("fill",Player.x,Player.y,PLAYERSIZE, PLAYERSIZE)
   if DEBUG then
-    love.graphics.setColor(0,255,0)
+    love.graphics.setColor(0,1,0)
     love.graphics.print(string.format("Player at (%06.2f , %06.2f) jumping=%s falling=", Player.x, Player.y, tostring(Player.jumping), tostring(Player.falling)), 50,0)
     love.graphics.print(string.format("Player occupies cells(%d): %s", #Player.Cells, table.concat(Player.Cells, ' | ')), 450,0)
   end
@@ -114,7 +114,7 @@ function playermove(dt)
   -- jumping up or falling down
   Player.G = Player.G + Player.S*dt
 
-  if not Player.jumping and isDown(" ") and not Player.falling then
+  if not Player.jumping and isDown("space") and not Player.falling then
     Player.jumping = true 
     Player.G = -100
   end

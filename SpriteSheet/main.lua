@@ -31,9 +31,9 @@ function love.draw()
   for k,v in ipairs(Animations) do
     v:draw(k*framewidth, 0)
     if k==selected then
-      love.graphics.setColor(255,0,0,127)
+      love.graphics.setColor(love.math.colorFromBytes(255,0,0,127))
       love.graphics.rectangle('fill', k*framewidth,0, framewidth, frameheight)
-      love.graphics.setColor(255,255, 255,255)
+      love.graphics.setColor(1,1, 1,1)
     end
   end
   local a=Animations[selected]
@@ -55,7 +55,7 @@ function love.keypressed(k)
   else
     a=Animations[selected]
     if a then
-      if k==" " then
+      if k=="space" then
         if a:isPaused() then
           a:play()
         else

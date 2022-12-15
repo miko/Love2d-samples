@@ -12,9 +12,9 @@ function love.conf(t)
 	t.console = false
 	t.title = "Minefield"
 	t.author = "MiKo"
-	t.screen.fullscreen = false
-	t.screen.vsync = true
-	t.screen.fsaa = 0
+	t.window.fullscreen = false
+	t.window.vsync = true
+	t.window.fsaa = 0
 	--t.screen.height = 800
 	--t.screen.width = 1024
 end

@@ -16,7 +16,7 @@ function texturize(target, texture)
       return texture:getPixel(x%tx, y%ty)
     end
   end
-  local id=target:getImageData()
+  local id=target:newImageData()
   id:mapPixel(placeTexture)
   return love.graphics.newImage(id)
 end

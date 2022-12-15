@@ -1,9 +1,9 @@
 local Intro=require 'Intro'
 function love.load()
   I=Intro()
-  local t1=I:addText('LoveJam Test Jam entry!'):setPosition(20, 50):setColor(0, 255, 0):setFont(60):center()
-  local t2=I:addText('Made with Love2d'):setPosition(400, 200):setColor(0, 0, 255):setFont(30)
-  local t3=I:addText('(C) 2011 miko - average Love user'):setPosition(10, 500):setColor(255,0,0):setFont(40):center()
+  local t1=I:addText('LoveJam Test Jam entry!'):setPosition(20, 50):setColor(0, 1, 0):setFont(60):center()
+  local t2=I:addText('Made with Love2d'):setPosition(400, 200):setColor(0, 0, 1):setFont(30)
+  local t3=I:addText('(C) 2011 miko - average Love user'):setPosition(10, 500):setColor(1,0,0):setFont(40):center()
   I:addImage('logo.png'):setPosition(200, 180)
   I:addImage('face-grin.png'):setPosition(400, 350)
 

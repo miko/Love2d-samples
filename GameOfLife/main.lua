@@ -96,10 +96,10 @@ function love.mousepressed(x, y, b)
   local mr, mc=mouse2cell(x, y)
   status=nil
   if mr then
-    if b=='l' then
+    if b==1 then
       CELLS[mc][mr]=not CELLS[mc][mr] 
       status=string.format('Cell c=%d,r=%d changed to %s', mc, mr, CELLS[mc][mr] and 'ALIVE' or 'DEAD')
-    elseif b=='r' then
+    elseif b==2 then
       status=string.format('Cell c=%d,y=%d %s neighbours: %d', mc, mr, CELLS[mc][mr] and 'ALIVE' or 'DEAD', countNeighbours(mc, mr))
     end
     cached=nil
@@ -109,7 +109,7 @@ end
 
 function love.keypressed(a, b)
   if a=='q' or a=='escape' then
-    love.event.push("q")
+    love.event.quit()
   end
   if a=='r' or a==' ' then
     running=not running
